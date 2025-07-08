@@ -3,6 +3,10 @@ component: build
 
 shell: bash
 
+vaultVariables:
+  OCIR_PASSWORD: ocid1.vaultsecret.oc1.me-dubai-1.amaaaaaaatrw5lyapb7wrgsc6pr7qjcnweyzoaa2boa3o2ih53uocwzblk5q
+  OCIR_USERNAME: ocid1.vaultsecret.oc1.me-dubai-1.amaaaaaaatrw5lyakak3l45lqfxawh24j7fsj5l54ch7dq7dpr4hotji4nva
+
 steps:
   - type: Command
     name: Install dependencies
