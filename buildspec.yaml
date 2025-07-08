@@ -4,8 +4,8 @@ component: build
 shell: bash
 
 vaultVariables:
-  OCIR_PASSWORD: ocid1.vaultsecret.oc1.me-dubai-1.amaaaaaaatrw5lyapb7wrgsc6pr7qjcnweyzoaa2boa3o2ih53uocwzblk5q
-  OCIR_USERNAME: ocid1.vaultsecret.oc1.me-dubai-1.amaaaaaaatrw5lyakak3l45lqfxawh24j7fsj5l54ch7dq7dpr4hotji4nva
+  OCIR_PASSWORD: jFF)WKAfyo>8Le8JH(kR
+  OCIR_USERNAME: ax6enss1ld89/imasha.nimantha@onelexiicon.com
 
 steps:
   - type: Command
