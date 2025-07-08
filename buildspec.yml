@@ -1,29 +1,14 @@
-version: 0.2
+echo "Installing dependencies..."
+pip install -r requirements.txt
 
-env:
-  parameter-store:
-    DOCKER_REGISTRY_USERNAME: /python-app/docker-credentials/username
-    DOCKER_REGISTRY_PASSWORD: /python-app/docker-credentials/password
-    DOCKER_REGISTRY_URL: /python-app/docker-registry/url
-phases:
-  install:
-    runtime-versions:
-      python: 3.12
-  pre_build:
-    commands:
-      - echo "Installing dependencies..."
-      - pip install -r requirements.txt
-  build:
-    commands:
-      - echo "Running tests..."
-      - echo "Building Docker image..."
-      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
-      - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/simple-python-flask-app:latest" .
-      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/simple-python-flask-app:latest"
-  post_build:
-    commands:
-      - echo "Build completed successfully!"
-artifacts:
-  files:
-    - '**/*'
-  base-directory: ../simple-python-app
+echo "Running tests..."
+# Add test commands here if any
+
+echo "Building Docker image..."
+docker login phx.ocir.io -u '<tenancy-namespace>/<username>' -p "$OCIR_PASSWORD"
+docker build -t phx.ocir.io/<tenancy-namespace>/simple-python-flask-app:latest .
+
+echo "Pushing Docker image to OCIR..."
+docker push phx.ocir.io/<tenancy-namespace>/simple-python-flask-app:latest
+
+echo "Build completed successfully!"
