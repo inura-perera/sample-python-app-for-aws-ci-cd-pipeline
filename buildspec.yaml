@@ -1,19 +1,36 @@
-#!/bin/bash
-set -e
+version: 0.1
+component: build
 
-echo "Installing dependencies..."
-pip install -r requirements.txt
+shell: bash
 
-echo "Running tests..."
-# Add test commands here if any
+steps:
+  - type: Command
+    name: Install dependencies
+    command: |
+      pip install -r requirements.txt
 
-echo "Logging into OCIR..."
-docker login dxb.ocir.io -u "$OCIR_USERNAME" -p "$OCIR_PASSWORD"
+  - type: Command
+    name: Run tests
+    command: |
+      echo "Running tests..."
+      # Add test commands here if needed
 
-echo "Building Docker image..."
-docker build -t dxb.ocir.io/ax6enss1ld89/simple-python-flask-app:latest .
+  - type: Command
+    name: Docker login
+    command: |
+      echo "$OCIR_PASSWORD" | docker login dxb.ocir.io -u "$OCIR_USERNAME" --password-stdin
 
-echo "Pushing Docker image to OCIR..."
-docker push dxb.ocir.io/ax6enss1ld89/simple-python-flask-app:latest
+  - type: Command
+    name: Build Docker image
+    command: |
+      docker build -t dxb.ocir.io/ax6enss1ld89/simple-python-flask-app:latest .
 
-echo "Build completed successfully!"
+  - type: Command
+    name: Push Docker image
+    command: |
+      docker push dxb.ocir.io/ax6enss1ld89/simple-python-flask-app:latest
+
+outputArtifacts:
+  - name: image
+    type: DOCKER_IMAGE
+    location: dxb.ocir.io/ax6enss1ld89/simple-python-flask-app:latest
