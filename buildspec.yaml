@@ -3,10 +3,6 @@ component: build
 
 shell: bash
 
-vaultVariables:
-  OCIR_PASSWORD: jFF)WKAfyo>8Le8JH(kR
-  OCIR_USERNAME: ax6enss1ld89/imasha.nimantha@onelexiicon.com
-
 steps:
   - type: Command
     name: Install dependencies
