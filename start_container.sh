@@ -1,8 +1,14 @@
 #!/bin/bash
-set -e
 
-# Pull the Docker image from Docker Hub
-docker pull DOCKER_USERNAME/DOCKER_REPOSITORY
+echo "Logging in to OCIR..."
+docker login phx.ocir.io -u '<tenancy-namespace>/<username>' -p '<auth_token>'
 
-# Run the Docker image as a container
-docker run -d -p 5000:5000 DOCKER_USERNAME/DOCKER_REPOSITORY
+echo "Pulling latest Docker image..."
+docker pull phx.ocir.io/<tenancy-namespace>/simple-python-flask-app:latest
+
+echo "Stopping old container (if running)..."
+docker stop python-flask-app || true && docker rm python-flask-app || true
+
+echo "Starting new container..."
+docker run -d --name python-flask-app -p 5000:5000 phx.ocir.io/<tenancy-namespace>/simple-python-flask-app:latest
+
