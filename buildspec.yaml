@@ -1,14 +1,19 @@
+#!/bin/bash
+set -e
+
 echo "Installing dependencies..."
 pip install -r requirements.txt
 
 echo "Running tests..."
 # Add test commands here if any
 
+echo "Logging into OCIR..."
+docker login dxb.ocir.io -u "$OCIR_USERNAME" -p "$OCIR_PASSWORD"
+
 echo "Building Docker image..."
-docker login dxb.ocir.io -u '$OCIR_USERNAME' -p "$OCIR_PASSWORD"
 docker build -t dxb.ocir.io/ax6enss1ld89/simple-python-flask-app:latest .
 
 echo "Pushing Docker image to OCIR..."
-docker push phx.ocir.io/ax6enss1ld89/simple-python-flask-app:latest
+docker push dxb.ocir.io/ax6enss1ld89/simple-python-flask-app:latest
 
 echo "Build completed successfully!"
