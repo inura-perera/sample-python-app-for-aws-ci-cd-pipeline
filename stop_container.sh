@@ -1,6 +1,2 @@
 #!/bin/bash
-set -e
-
-# Stop the running container (if any)
-containerid=`docker ps | awk -F " " '{print $1}'`
-docker rm -f $containerid
+docker stop python-flask-app || true && docker rm python-flask-app || true
