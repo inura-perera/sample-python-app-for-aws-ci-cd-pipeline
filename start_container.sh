@@ -1,14 +1,15 @@
 #!/bin/bash
+set -e
+
+# Set these as environment variables or inject from DevOps
+OCIR_URL=dxb.ocir.io/ax6enss1ld89/simple-python-flask-app
 
 echo "Logging in to OCIR..."
-docker login phx.ocir.io -u '<tenancy-namespace>/<username>' -p '<auth_token>'
+echo "$OCIR_PASSWORD" | docker login phx.ocir.io -u "$OCIR_USERNAME" --password-stdin
 
-echo "Pulling latest Docker image..."
-docker pull phx.ocir.io/<tenancy-namespace>/simple-python-flask-app:latest
+echo "Pulling Docker image..."
+docker pull "$OCIR_URL:latest"
 
-echo "Stopping old container (if running)..."
-docker stop python-flask-app || true && docker rm python-flask-app || true
-
-echo "Starting new container..."
-docker run -d --name python-flask-app -p 5000:5000 phx.ocir.io/<tenancy-namespace>/simple-python-flask-app:latest
+echo "Running container..."
+docker run -d --name python-flask-app -p 5000:5000 "$OCIR_URL:latest"
 
