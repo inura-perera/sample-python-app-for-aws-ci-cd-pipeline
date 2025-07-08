@@ -1,0 +1,10 @@
+schemaVersion: 1.0
+steps:
+  - type: Command
+    timeoutInSeconds: 300
+    name: Deploy container
+    command: |
+      docker pull dxb.ocir.io/ax6enss1ld89/demo:latest
+      docker stop python-flask-app || true
+      docker rm python-flask-app || true
+      docker run -d --name python-flask-app -p 5000:5000 dxb.ocir.io/ax6enss1ld89/demo:latest
