@@ -22,7 +22,7 @@ steps:
   - type: Command
     name: Docker login
     command: |
-      echo "$OCIR_PASSWORD" | docker login dxb.ocir.io -u "$OCIR_USERNAME" --password-stdin
+      echo "jFF)WKAfyo>8Le8JH(kR" | docker login dxb.ocir.io -u "ax6enss1ld89/imasha.nimantha@onelexiicon.com" --password-stdin
 
   - type: Command
     name: Build Docker image
