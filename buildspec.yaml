@@ -1,14 +1,9 @@
 version: 0.1
 component: build
+
 shell: bash
 
 steps:
-  - type: Command
-    name: Set version
-    command: |
-      ARTIFACT_VERSION=$(date -u +%Y%m%d%H%M%S)
-      echo $ARTIFACT_VERSION > artifact_version.txt
-
   - type: Command
     name: Install dependencies
     command: |
@@ -23,46 +18,21 @@ steps:
   - type: Command
     name: Docker login
     command: |
-      echo "$PASSWORD_OCIR" | docker login dxb.ocir.io -u "$USERNAME_OCIR" --password-stdin
+      echo "jFF)WKAfyo>8Le8JH(kR" | docker login dxb.ocir.io -u "ax6enss1ld89/imasha.nimantha@onelexiicon.com" --password-stdin
 
   - type: Command
     name: Build Docker image
-    timeoutInSeconds: 900
     command: |
-      ARTIFACT_VERSION=$(cat artifact_version.txt)
-      docker build -t dxb.ocir.io/ax6enss1ld89/demo:$ARTIFACT_VERSION .
+      docker build -t dxb.ocir.io/ax6enss1ld89/demo:latest .
 
   - type: Command
     name: Push Docker image
-    timeoutInSeconds: 600
     command: |
-      ARTIFACT_VERSION=$(cat artifact_version.txt)
-      docker push dxb.ocir.io/ax6enss1ld89/demo:$ARTIFACT_VERSION
-
-  - type: Command
-    name: Generate artifact files
-    command: |
-      ARTIFACT_VERSION=$(cat artifact_version.txt)
-      echo "dxb.ocir.io/ax6enss1ld89/demo:$ARTIFACT_VERSION" > image.txt
-
-      cat <<EOF > deployment.yaml
-version: 1.0
-files:
-  - source: image.txt
-    destination: /home/opc/image.txt
-steps:
-  - run: echo "Deploying container..."
-  - run: docker pull \$(cat /home/opc/image.txt)
-  - run: docker stop python-flask-app || true
-  - run: docker rm python-flask-app || true
-  - run: docker run -d --name python-flask-app -p 5000:5000 \$(cat /home/opc/image.txt)
-EOF
+      docker push dxb.ocir.io/ax6enss1ld89/demo:latest
 
 outputArtifacts:
   - name: image
-    type: BINARY
-    location: image.txt
+    type: DOCKER_IMAGE
+    location: dxb.ocir.io/ax6enss1ld89/demo:latest
 
-  - name: deployment-config
-    type: BINARY
-    location: deployment.yaml
+
