@@ -17,7 +17,7 @@ steps:
   - type: Command
     name: Docker login
     command: |
-      echo "$OCIR_PASSWORD" | docker login dxb.ocir.io -u "$OCIR_USERNAME" --password-stdin
+      echo "$PASSWORD_OCIR" | docker login dxb.ocir.io -u "$USERNAME_OCIR" --password-stdin
 
   - type: Command
     name: Build Docker image
