@@ -21,11 +21,13 @@ steps:
 
   - type: Command
     name: Build Docker image
+    timeoutInSeconds: 900
     command: |
       docker build -t dxb.ocir.io/ax6enss1ld89/demo:latest .
 
   - type: Command
     name: Push Docker image
+    timeoutInSeconds: 600
     command: |
       docker push dxb.ocir.io/ax6enss1ld89/demo:latest
 
