@@ -49,9 +49,9 @@ steps:
 
 outputArtifacts:
   - name: image
-    type: GENERAL
+    type: BINARY
     location: image.txt
 
   - name: deployment-config
-    type: INSTANCE_GROUP_DEPLOYMENT_CONFIGURATION
+    type: BINARY
     location: deployment.yaml
