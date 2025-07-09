@@ -60,9 +60,7 @@ outputArtifacts:
   - name: image
     type: BINARY
     location: image.txt
-    version: ${ARTIFACT_VERSION}
 
   - name: deployment-config
     type: BINARY
     location: deployment.yaml
-    version: ${ARTIFACT_VERSION}
