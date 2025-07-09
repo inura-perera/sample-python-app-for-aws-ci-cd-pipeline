@@ -35,25 +35,23 @@ steps:
     name: Generate artifact files
     command: |
       echo "dxb.ocir.io/ax6enss1ld89/demo:latest" > image.txt
-      
-      echo '#!/bin/bash' > deploy.sh
-      echo 'set -e' >> deploy.sh
-      echo '' >> deploy.sh
-      echo 'IMAGE=$(cat image.txt)' >> deploy.sh
-      echo '' >> deploy.sh
-      echo 'echo "Deploying container..."' >> deploy.sh
-      echo 'docker pull "$IMAGE"' >> deploy.sh
-      echo 'docker stop python-flask-app || true' >> deploy.sh
-      echo 'docker rm python-flask-app || true' >> deploy.sh
-      echo 'docker run -d --name python-flask-app -p 5000:5000 "$IMAGE"' >> deploy.sh
 
-      chmod +x deploy.sh
+      echo "version: 1.0" > deployment.yaml
+      echo "files:" >> deployment.yaml
+      echo "  - source: image.txt" >> deployment.yaml
+      echo "    destination: /home/opc/image.txt" >> deployment.yaml
+      echo "steps:" >> deployment.yaml
+      echo "  - run: echo \"Deploying container...\"" >> deployment.yaml
+      echo "  - run: docker pull \$(cat /home/opc/image.txt)" >> deployment.yaml
+      echo "  - run: docker stop python-flask-app || true" >> deployment.yaml
+      echo "  - run: docker rm python-flask-app || true" >> deployment.yaml
+      echo "  - run: docker run -d --name python-flask-app -p 5000:5000 \$(cat /home/opc/image.txt)" >> deployment.yaml
 
 outputArtifacts:
   - name: image
-    type: BINARY
+    type: GENERAL
     location: image.txt
 
-  - name: deploy-script
-    type: BINARY
-    location: deploy.sh
+  - name: deployment-config
+    type: INSTANCE_GROUP_DEPLOYMENT_CONFIGURATION
+    location: deployment.yaml
