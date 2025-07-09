@@ -4,6 +4,12 @@ shell: bash
 
 steps:
   - type: Command
+    name: Set version
+    command: |
+      export ARTIFACT_VERSION=$(date -u +%Y%m%d%H%M%S)
+      echo $ARTIFACT_VERSION > artifact_version.txt
+
+  - type: Command
     name: Install dependencies
     command: |
       pip install -r requirements.txt
@@ -23,18 +29,21 @@ steps:
     name: Build Docker image
     timeoutInSeconds: 900
     command: |
-      docker build -t dxb.ocir.io/ax6enss1ld89/demo:latest .
+      export ARTIFACT_VERSION=$(cat artifact_version.txt)
+      docker build -t dxb.ocir.io/ax6enss1ld89/demo:$ARTIFACT_VERSION .
 
   - type: Command
     name: Push Docker image
     timeoutInSeconds: 600
     command: |
-      docker push dxb.ocir.io/ax6enss1ld89/demo:latest
+      export ARTIFACT_VERSION=$(cat artifact_version.txt)
+      docker push dxb.ocir.io/ax6enss1ld89/demo:$ARTIFACT_VERSION
 
   - type: Command
     name: Generate artifact files
     command: |
-      echo "dxb.ocir.io/ax6enss1ld89/demo:latest" > image.txt
+      export ARTIFACT_VERSION=$(cat artifact_version.txt)
+      echo "dxb.ocir.io/ax6enss1ld89/demo:$ARTIFACT_VERSION" > image.txt
 
       echo "version: 1.0" > deployment.yaml
       echo "files:" >> deployment.yaml
@@ -51,7 +60,9 @@ outputArtifacts:
   - name: image
     type: BINARY
     location: image.txt
+    version: ${ARTIFACT_VERSION}
 
   - name: deployment-config
     type: BINARY
     location: deployment.yaml
+    version: ${ARTIFACT_VERSION}
